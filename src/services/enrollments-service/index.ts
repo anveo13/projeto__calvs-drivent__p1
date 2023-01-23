@@ -60,12 +60,11 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
   const enrollment = exclude(params, "address");
   const address = getAddressForUpsert(params.address);
   
-  const isCepValid = await getAddressFromCEP(address.cep);
-  
-  if(!isCepValid) {
-    throw notFoundError();
+  const cep = await getAddressFromCEP(address.cep)
+  if(!cep.bairro){
+    throw notFoundError()
   }
-  return isCepValid;
+  
   //TODO - Verificar se o CEP é válido
   const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, "userId"));
 
