@@ -9,14 +9,7 @@ export type ViaCEPAddress = {
   bairro: string,
   localidade: string,
   uf: string,
-};
 
-export type RequestError = {
-  status: number,
-  data: object | null,
-  statusText: string,
-  name: string,
-  message: string,
 };
 
 export type AddressEnrollment = {
@@ -27,3 +20,11 @@ export type AddressEnrollment = {
   uf: string,
   error?: string
 }
+
+export type RequestError = {
+  status: number,
+  data: object | null,
+  statusText: string,
+  name: string,
+  message: string,
+};

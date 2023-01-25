@@ -88,13 +88,3 @@ const enrollmentsService = {
 };
 
 export default enrollmentsService;
-
-/* kkkkkkkkkkkkk
-kkkkkkkkkkk
-kkkkkkkkkkk
- llllllllllllllllllllllllllllllllll
- çççççççççççççç
- çççççççççççççççççç
- k
- kkkkkkkkk
- */
