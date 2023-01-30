@@ -1,15 +1,16 @@
 import { notFoundError } from "@/errors";
 import enrollmentRepository from "@/repositories/enrollment-repository";
 import ticketsRepository from "@/repositories/tickets-repository";
-import { TicketStatus, TicketType } from "@prisma/client";
+import { TicketStatus } from "@prisma/client";
 
-export async function listTicketTypes(): Promise<TicketType[]> {
-  const ticketTypes = await ticketsRepository.listTicketTypes();
-  return ticketTypes;
+async function listTicketTypes() {
+  const result = await ticketsRepository.listTicketTypes();
+  if (!result) return [];
+  return result;
 }
 
-async function userChecks(userId: number) {
-  const checkEnrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+async function getTickets(userId: number) {
+  const checkEnrollment = await enrollmentRepository.checkEnrollment(userId);
   if (!checkEnrollment) {
     throw notFoundError();
   }
@@ -22,22 +23,20 @@ async function userChecks(userId: number) {
 }
 
 async function createTicket(userId: number, ticketTypeId: number) {
-  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+  const enrollment = await enrollmentRepository.checkEnrollment(userId);
   if (!enrollment) {
     throw notFoundError();
   }
 
   const ticketData = {
-    ticketTypeId,
+    ticketTypeId: ticketTypeId,
     enrollmentId: enrollment.id,
     status: TicketStatus.RESERVED
   };
 
-  await ticketsRepository.createTicket(ticketData);
-
+  await ticketsRepository.postTicket(ticketData);
   const ticket = await ticketsRepository.getTicketsByEnrollment(enrollment.id);
-
   return ticket;
 }
 
-export default { listTicketTypes, userChecks, createTicket };
+export default { listTicketTypes, getTickets, createTicket };

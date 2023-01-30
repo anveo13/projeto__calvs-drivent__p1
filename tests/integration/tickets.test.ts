@@ -48,7 +48,7 @@ describe("GET /tickets/types", () => {
 
       const response = await server.get("/tickets/types").set("Authorization", `Bearer ${token}`);
 
-      expect(response.body).toEqual({});
+      expect(response.body).toEqual([]);
     });
 
     it("should respond with status 200 and with existing TicketTypes data", async () => {

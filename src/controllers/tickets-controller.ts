@@ -5,17 +5,17 @@ import httpStatus from "http-status";
 
 export async function getTicketsType(req: AuthenticatedRequest, res: Response) {
   try {
-    const ticketTypes = await ticketsService.listTicketTypes();
-    return res.status(httpStatus.OK).send(ticketTypes);
+    const result = await ticketsService.listTicketTypes();
+    return res.send(result).status(httpStatus.OK);
   } catch (error) {
-    return res.sendStatus(httpStatus.BAD_REQUEST);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
 
 export async function showTickets(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   try {
-    const ticketUser = await ticketsService.userChecks(userId);
+    const ticketUser = await ticketsService.getTickets(userId);
     return res.send(ticketUser).status(httpStatus.OK);
   } catch (error) {
     return res.sendStatus(httpStatus.NOT_FOUND);
@@ -32,7 +32,6 @@ export async function createTicket(req: AuthenticatedRequest, res: Response) {
 
   try {
     const ticketTypes = await ticketsService.createTicket(userId, ticketTypeId);
-
     return res.status(httpStatus.CREATED).send(ticketTypes);
   } catch (error) {
     return res.sendStatus(httpStatus.NOT_FOUND);
