@@ -10,7 +10,7 @@ async function listTicketTypes() {
 }
 
 async function getTickets(userId: number) {
-  const checkEnrollment = await enrollmentRepository.checkEnrollment(userId);
+  const checkEnrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!checkEnrollment) {
     throw notFoundError();
   }
@@ -23,7 +23,7 @@ async function getTickets(userId: number) {
 }
 
 async function createTicket(userId: number, ticketTypeId: number) {
-  const enrollment = await enrollmentRepository.checkEnrollment(userId);
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) {
     throw notFoundError();
   }
